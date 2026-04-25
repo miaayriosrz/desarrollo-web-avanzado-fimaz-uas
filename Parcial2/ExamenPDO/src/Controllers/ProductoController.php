@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../config/Database.php';
-require_once __DIR__ . '/../models/Producto.php';
+require_once __DIR__ . '/../Config/Database.php';
+require_once __DIR__ . '/../Models/Producto.php';
 
 class ProductoController {
     private $connection;
@@ -53,4 +53,5 @@ class ProductoController {
         return $stmt->execute();
     }
 }
+//Rios R. Mia Yolanda
 ?>

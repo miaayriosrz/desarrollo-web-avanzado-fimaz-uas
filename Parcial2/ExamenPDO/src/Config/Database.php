@@ -1,7 +1,7 @@
 <?php
 class Database {
     private $host = "localhost";
-    private $db_name = "venta"; // Asegúrate que este nombre coincida con tu BD
+    private $db_name = "venta"; 
     private $username = "root";
     private $password = "";
     private $charset = "utf8mb4";
@@ -20,4 +20,5 @@ class Database {
         return $this->connection;
     }
 }
+//Rios R. Mia Yolanda
 ?>

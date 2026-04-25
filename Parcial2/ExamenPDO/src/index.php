@@ -5,19 +5,16 @@ $controller = new ProductoController();
 $mensaje = "";
 $productoEditar = null;
 
-// ELIMINAR
 if (isset($_GET['eliminar'])) {
     if ($controller->eliminar($_GET['eliminar'])) {
         $mensaje = "Producto eliminado correctamente.";
     }
 }
 
-// EDITAR (Cargar datos)
 if (isset($_GET['editar'])) {
     $productoEditar = $controller->obtenerPorId($_GET['editar']);
 }
 
-// GUARDAR O ACTUALIZAR
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'] ?? null;
     $nuevoProducto = new Producto(
@@ -121,4 +118,5 @@ $productos = $controller->listar();
     </div>
 </div>
 </body>
+//Rios R. Mia Yolanda
 </html>
