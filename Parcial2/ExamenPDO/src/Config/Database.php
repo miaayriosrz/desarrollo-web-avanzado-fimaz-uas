@@ -1,30 +1,23 @@
 <?php
-namespace App\Config;
-
-use PDO;
-use PDOException;
-
 class Database {
     private $host = "localhost";
-    private $db = "venta";
-    private $user = "root";
+    private $db_name = "venta"; // Asegúrate que este nombre coincida con tu BD
+    private $username = "root";
     private $password = "";
     private $charset = "utf8mb4";
     private $connection;
 
-    public function __construct() {
+    public function getConnection() {
+        $this->connection = null;
         try {
-            $dns = "mysql:host=$this->host;dbname=$this->db;charset=$this->charset";
-            $this->connection = new PDO($dns, $this->user, $this->password);
+            $dsn = "mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=" . $this->charset;
+            $this->connection = new PDO($dsn, $this->username, $this->password);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
+        } catch(PDOException $e) {
             echo "Error de conexión: " . $e->getMessage();
         }
-    }
-
-    public function getConnection() {
         return $this->connection;
     }
 }
-// Rios R. Mia Yolanda
+?>

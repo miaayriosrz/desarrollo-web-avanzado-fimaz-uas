@@ -1,10 +1,6 @@
 <?php
-namespace App\Controllers;
-
-use App\Config\Database;
-use App\Models\Producto;
-use PDO;
-use PDOException;
+require_once __DIR__ . '/../config/Database.php';
+require_once __DIR__ . '/../models/Producto.php';
 
 class ProductoController {
     private $connection;
@@ -15,65 +11,46 @@ class ProductoController {
     }
 
     public function crear(Producto $producto) {
-        try {
-            $sql = "INSERT INTO productos (nombre, descripcion, existencia, precio) VALUES (:n, :d, :e, :p)";
-            $stmt = $this->connection->prepare($sql);
-            $stmt->bindValue(':n', $producto->getNombre());
-            $stmt->bindValue(':d', $producto->getDescripcion());
-            $stmt->bindValue(':e', $producto->getExistencia(), PDO::PARAM_INT);
-            $stmt->bindValue(':p', $producto->getPrecio());
-            return $stmt->execute();
-        } catch (PDOException $e) { return false; }
+        $sql = "INSERT INTO productos (nombre, descripcion, existencia, precio) VALUES (:nombre, :descripcion, :existencia, :precio)";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue(':nombre', $producto->getNombre());
+        $stmt->bindValue(':descripcion', $producto->getDescripcion());
+        $stmt->bindValue(':existencia', $producto->getExistencia(), PDO::PARAM_INT);
+        $stmt->bindValue(':precio', $producto->getPrecio());
+        return $stmt->execute();
     }
 
     public function listar() {
-        try {
-            $sql = "SELECT * FROM productos ORDER BY id DESC";
-            $stmt = $this->connection->query($sql);
-            return $stmt->fetchAll();
-        } catch (PDOException $e) { return []; }
+        $sql = "SELECT * FROM productos ORDER BY id DESC";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
     public function obtenerPorId($id) {
-        try {
-            $sql = "SELECT * FROM productos WHERE id = :id";
-            $stmt = $this->connection->prepare($sql);
-            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
-            return $stmt->fetch();
-        } catch (PDOException $e) { return null; }
+        $sql = "SELECT * FROM productos WHERE id = :id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch();
     }
 
     public function actualizar(Producto $producto) {
-        try {
-            $sql = "UPDATE productos SET nombre=:n, descripcion=:d, existencia=:e, precio=:p WHERE id=:id";
-            $stmt = $this->connection->prepare($sql);
-            $stmt->bindValue(':n', $producto->getNombre());
-            $stmt->bindValue(':d', $producto->getDescripcion());
-            $stmt->bindValue(':e', $producto->getExistencia(), PDO::PARAM_INT);
-            $stmt->bindValue(':p', $producto->getPrecio());
-            $stmt->bindValue(':id', $producto->getId(), PDO::PARAM_INT);
-            return $stmt->execute();
-        } catch (PDOException $e) { return false; }
+        $sql = "UPDATE productos SET nombre = :nombre, descripcion = :descripcion, existencia = :existencia, precio = :precio WHERE id = :id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue(':id', $producto->getId(), PDO::PARAM_INT);
+        $stmt->bindValue(':nombre', $producto->getNombre());
+        $stmt->bindValue(':descripcion', $producto->getDescripcion());
+        $stmt->bindValue(':existencia', $producto->getExistencia(), PDO::PARAM_INT);
+        $stmt->bindValue(':precio', $producto->getPrecio());
+        return $stmt->execute();
     }
 
     public function eliminar($id) {
-        try {
-            $sql = "DELETE FROM productos WHERE id = :id";
-            $stmt = $this->connection->prepare($sql);
-            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-            return $stmt->execute();
-        } catch (PDOException $e) { return false; }
-    }
-
-    public function buscar($t) {
-        try {
-            $sql = "SELECT * FROM productos WHERE nombre LIKE :t OR descripcion LIKE :t ORDER BY id DESC";
-            $stmt = $this->connection->prepare($sql);
-            $stmt->bindValue(':t', "%$t%");
-            $stmt->execute();
-            return $stmt->fetchAll();
-        } catch (PDOException $e) { return []; }
+        $sql = "DELETE FROM productos WHERE id = :id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
     }
 }
-// Rios R. Mia Yolanda
+?>
